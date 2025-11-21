@@ -1,0 +1,255 @@
+﻿@model OrderVM
+
+<style>
+    .details-container {
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin-top: 2rem;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .header-row {
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #343a40;
+    }
+
+    .header-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .header-id {
+        font-family: 'Quicksand', sans-serif;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .back-to-orders-link {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .back-to-orders-link:hover {
+            color: #ffffff;
+        }
+
+    .section-title {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        color: #f8f9fa;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #343a40;
+    }
+
+    .form-label {
+        color: #adb5bd;
+    }
+
+    .form-input {
+        background-color: #1c1c1c !important;
+        border: 1px solid #343a40 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+    }
+
+        .form-input:focus {
+            border-color: var(--primary-accent) !important;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3) !important;
+        }
+
+    .form-input-disabled {
+        background-color: #1c1c1c !important;
+        border: 1px solid #343a40 !important;
+        color: #6c757d !important;
+        border-radius: 8px !important;
+        cursor: not-allowed;
+    }
+
+    /* Right Column: Summary & Actions */
+    .summary-box {
+        background-color: #1c1c1c;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+    .summary-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .summary-total {
+        padding-top: 1rem;
+        margin-top: 1rem;
+        border-top: 1px solid #343a40;
+    }
+
+    .summary-total-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-accent);
+    }
+
+    /* Action Buttons */
+    .action-panel .btn {
+        border-radius: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-action-primary {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+    }
+
+    .btn-action-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #1c1c1c;
+    }
+
+    .btn-action-success {
+        background-color: #198754;
+        border-color: #198754;
+    }
+
+    .btn-action-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+</style>
+
+<form method="post">
+    <input asp-for="OrderHeader.Id" hidden />
+    <div class="details-container shadow-lg my-4">
+        <!-- Header -->
+        <div class="row header-row align-items-center">
+            <div class="col-md-6">
+                <h2 class="header-title">Order Details <span class="header-id">#@Model.OrderHeader.Id</span></h2>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a asp-action="Index" class="back-to-orders-link"><i class="bi bi-arrow-left me-2"></i>Back to Orders</a>
+            </div>
+        </div>
+
+        <div class="row gx-5">
+            <!-- Left Column: Order & Shipping Info -->
+            <div class="col-lg-7">
+                <div class="mb-4">
+                    <h4 class="section-title">Customer & Shipping Details</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label">Name</label><input asp-for="OrderHeader.Name" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-md-6"><label class="form-label">Phone</label><input asp-for="OrderHeader.PhoneNumber" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-12"><label class="form-label">Street Address</label><input asp-for="OrderHeader.StreetAddress" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-md-4"><label class="form-label">City</label><input asp-for="OrderHeader.City" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-md-4"><label class="form-label">State</label><input asp-for="OrderHeader.State" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-md-4"><label class="form-label">Postal Code</label><input asp-for="OrderHeader.PostalCode" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-12"><label class="form-label">Email</label><input asp-for="OrderHeader.ApplicationUser.Email" readonly class="form-control form-input-disabled" /></div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h4 class="section-title">Order & Tracking Information</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label">Order Date</label><input value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly class="form-control form-input-disabled" /></div>
+                        <div class="col-md-6"><label class="form-label">Shipping Date</label><input value="@Model.OrderHeader.ShippingDate.ToShortDateString()" readonly class="form-control form-input-disabled" /></div>
+                        <div class="col-md-6"><label class="form-label">Carrier</label><input asp-for="OrderHeader.Carrier" id="carrier" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                        <div class="col-md-6"><label class="form-label">Tracking Number</label><input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" class="@(User.IsInRole(SD.Role_Admin) ? "form-control form-input" : "form-control form-input-disabled")" readonly="@(!User.IsInRole(SD.Role_Admin))" /></div>
+                    </div>
+                </div>
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <button type="submit" asp-action="UpdateOrderDetail" class="btn btn-action-warning w-100">Update Order Details</button>
+                }
+            </div>
+
+            <!-- Right Column: Summary & Actions -->
+            <div class="col-lg-5 mt-4 mt-lg-0">
+                <div class="summary-box">
+                    <h4 class="section-title">Order Summary</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-white-50">Order Status:</span>
+                        <span class="badge rounded-pill bg-primary fs-6">@Model.OrderHeader.OrderStatus</span>
+                    </div>
+
+                    @foreach (var detail in Model.OrderDetail)
+                    {
+                        <div class="summary-item">
+                            <img src="@detail.Product.ImageUrl" class="summary-img" />
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0 text-white">@detail.Product.Title</h6>
+                                <small class="text-white-50">Qty: @detail.Count &times; @detail.Price.ToString("c")</small>
+                            </div>
+                            <div class="text-end text-white fw-bold">@((detail.Count * detail.Price).ToString("c"))</div>
+                        </div>
+                    }
+                    <div class="d-flex justify-content-between summary-total">
+                        <h5 class="text-white text-uppercase">Total</h5>
+                        <strong class="summary-total-amount">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+                    </div>
+                </div>
+
+                <div class="summary-box mt-4 action-panel d-grid gap-2">
+                    @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatusDelayedPayment && Model.OrderHeader.OrderStatus == SD.StatusShipped)
+                    {
+                        <button type="submit" class="btn btn-action-success">Pay Now</button>
+                    }
+                    @if (User.IsInRole(SD.Role_Admin))
+                    {
+                        if (Model.OrderHeader.OrderStatus == SD.StatusApproved)
+                        {
+                            <button type="submit" asp-action="StartProcessing" class="btn btn-action-primary">Start Processing</button>
+                        }
+                        if (Model.OrderHeader.OrderStatus == SD.StatusInProcess)
+                        {
+                            <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-action-primary">Ship Order</button>
+                        }
+                        if (Model.OrderHeader.OrderStatus != SD.StatusRefunded && Model.OrderHeader.OrderStatus != SD.StatusCancelled)
+                        {
+                            <button asp-action="CancelOrder" type="submit" class="btn btn-action-danger">Cancel Order</button>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput(){
+            if(document.getElementById("trackingNumber").value === ""){
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Please enter a Tracking Number.'});
+                return false;
+            }
+            if (document.getElementById("carrier").value === "") {
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Please enter a Carrier.'});
+                return false;
+            }
+            return true;
+        }
+    </script>
+}

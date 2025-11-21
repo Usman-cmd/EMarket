@@ -1,0 +1,42 @@
+# Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/
+.vs/
+bin/
+obj/
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Sensitive keys inside appsettings.*
+# (Facebook Secret, Stripe Keys, Brevo API Key, SQL Connection String, JWT Keys, etc.)
+# These files MUST NOT be uploaded.
+
+# Logs
+*.log
+
+# User-specific
+*.rsuser
+*.sln.docstates
+*.userprefs
+
+# Others
+node_modules/

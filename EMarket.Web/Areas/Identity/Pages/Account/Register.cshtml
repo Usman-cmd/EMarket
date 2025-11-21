@@ -1,0 +1,223 @@
+﻿@page
+@model RegisterModel
+
+<style>
+    .auth-container {
+        max-width: 800px;
+        margin: 4rem auto;
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 2.5rem 3rem;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .auth-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.8rem;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-subtitle {
+        color: #adb5bd;
+    }
+
+        .auth-subtitle a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+    .form-label {
+        color: #adb5bd;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-input, .form-select {
+        background-color: #1c1c1c !important;
+        border: 1px solid #343a40 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary-accent) !important;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3) !important;
+        }
+
+    .action-btn {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding: 0.8rem;
+        text-transform: uppercase;
+        font-size: 1rem;
+    }
+
+        .action-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+    .divider-text {
+        position: relative;
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        color: #6c757d;
+    }
+
+        .divider-text span {
+            padding: 7px;
+            font-size: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .divider-text:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            border-bottom: 1px solid #343a40;
+            top: 55%;
+            left: 0;
+            z-index: 1;
+        }
+</style>
+
+<div class="auth-container shadow-lg">
+    <div class="auth-header">
+        <h2 class="auth-title">Create an Account</h2>
+        <p class="auth-subtitle">
+            Already have an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In</a>
+        </p>
+    </div>
+
+    <form id="registerForm" class="row g-3" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="col-md-6">
+            <label asp-for="Input.Name" class="form-label"></label>
+            <input asp-for="Input.Name" class="form-control form-input" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Email" class="form-label"></label>
+            <input asp-for="Input.Email" class="form-control form-input" autocomplete="username" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.Password" class="form-label"></label>
+            <input asp-for="Input.Password" class="form-control form-input" autocomplete="new-password" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+            <input asp-for="Input.ConfirmPassword" class="form-control form-input" autocomplete="new-password" />
+            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+        </div>
+
+        <hr class="my-4" style="color: #343a40;" />
+
+        <div class="col-md-6">
+            <label asp-for="Input.PhoneNumber" class="form-label"></label>
+            <input asp-for="Input.PhoneNumber" class="form-control form-input" />
+            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Input.StreetAddress" class="form-label"></label>
+            <input asp-for="Input.StreetAddress" class="form-control form-input" />
+            <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.City" class="form-label"></label>
+            <input asp-for="Input.City" class="form-control form-input" />
+            <span asp-validation-for="Input.City" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.State" class="form-label"></label>
+            <input asp-for="Input.State" class="form-control form-input" />
+            <span asp-validation-for="Input.State" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Input.PostalCode" class="form-label"></label>
+            <input asp-for="Input.PostalCode" class="form-control form-input" />
+            <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+        </div>
+
+        @if (User.IsInRole(SD.Role_Admin))
+        {
+            <hr class="my-4" style="color: #343a40;" />
+            <h4 class="text-white-50">Admin Settings</h4>
+            <div class="col-md-6">
+                <label asp-for="Input.Role" class="form-label"></label>
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                    <option disabled selected>- Select Role -</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Input.CompanyId" class="form-label"></label>
+                <select asp-for="Input.CompanyId" style="display:none;" asp-items="@Model.Input.CompanyList" class="form-select">
+                    <option disabled selected>- Select Company -</option>
+                </select>
+            </div>
+        }
+
+        <div class="col-12 mt-4">
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary action-btn">Register</button>
+        </div>
+    </form>
+
+    @if (!User.IsInRole(SD.Role_Admin))
+    {
+        <section class="mt-4">
+            <div class="divider-text"><span>OR</span></div>
+            <p class="text-center text-white-50">Sign up with another service</p>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div class="d-grid gap-2">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-secondary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                    <i class="bi bi-google me-2"></i> @provider.DisplayName
+                                </button>
+                            }
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function(){
+                var selection = $('#Input_Role option:selected').text();
+                if(selection === 'Company'){
+                    $('#Input_CompanyId').parent().show();
+                }
+                else{
+                    $('#Input_CompanyId').parent().hide();
+                }
+            });
+            // Trigger change on page load to set initial state
+            $('#Input_Role').trigger('change');
+        })
+    </script>
+}

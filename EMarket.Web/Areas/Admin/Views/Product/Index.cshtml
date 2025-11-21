@@ -1,0 +1,143 @@
+﻿@model List<Product>
+
+<style>
+    .product-list-container {
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin-top: 2rem;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .header-row {
+        padding-bottom: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #343a40;
+    }
+
+    .list-header {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    .create-btn {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+        .create-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+
+    /* Custom DataTables Styling */
+    #tblData {
+        border-collapse: separate !important;
+        border-spacing: 0 10px !important; /* Adds space between rows */
+    }
+
+        #tblData thead th {
+            border: none !important;
+            color: #adb5bd;
+            font-family: 'Quicksand', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        #tblData tbody tr {
+            background-color: #1c1c1c;
+            border: none !important;
+            transition: background-color 0.3s ease;
+        }
+
+            #tblData tbody tr:hover {
+                background-color: #343a40;
+            }
+
+        #tblData tbody td {
+            border: none !important;
+            padding: 1.25rem 1rem !important;
+            vertical-align: middle;
+            color: #f8f9fa;
+        }
+
+            /* Rounding the corners of each row */
+            #tblData tbody td:first-child {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+
+            #tblData tbody td:last-child {
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+    /* Styling for action buttons */
+    .action-btn-group .btn {
+        margin: 0 5px;
+        border-radius: 8px;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .action-btn-group .btn-primary {
+        background-color: rgba(138, 43, 226, 0.2);
+        border: 1px solid var(--primary-accent);
+        color: var(--primary-accent);
+    }
+
+        .action-btn-group .btn-primary:hover {
+            background-color: var(--primary-accent);
+            color: white;
+        }
+
+    .action-btn-group .btn-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border: 1px solid #dc3545;
+        color: #dc3545;
+    }
+
+        .action-btn-group .btn-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+</style>
+
+<div class="product-list-container shadow-lg">
+    <div class="row header-row align-items-center">
+        <div class="col-6">
+            <h2 class="list-header">Product List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary create-btn">
+                <i class="bi bi-plus-circle-fill me-2"></i>Create New Product
+            </a>
+        </div>
+    </div>
+
+    <table id="tblData" class="table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Model Number</th>
+                <th>Price</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}

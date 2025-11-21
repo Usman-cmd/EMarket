@@ -1,0 +1,126 @@
+﻿@model int
+
+<style>
+    .confirmation-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 4rem;
+        margin-top: 4rem;
+        border: 1px solid #198754; /* Green border to signify success */
+        box-shadow: 0 0 20px rgba(25, 135, 84, 0.2);
+    }
+
+    .confirmation-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 2rem;
+    }
+
+    /* Animation for the checkmark */
+    .checkmark-circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 3;
+        stroke-miterlimit: 10;
+        stroke: #198754; /* Success Green */
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark-check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        stroke-width: 4;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+
+    .confirmation-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3rem;
+        color: #ffffff;
+        margin-bottom: 1rem;
+    }
+
+    .confirmation-subtitle {
+        font-size: 1.1rem;
+        color: #adb5bd;
+        max-width: 500px;
+        margin-bottom: 2rem;
+    }
+
+    .order-number-box {
+        background-color: #1c1c1c;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .order-number-label {
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+
+    .order-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #198754; /* Success Green */
+        letter-spacing: 2px;
+    }
+
+    .details-btn {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding: 0.8rem 2rem;
+        text-transform: uppercase;
+        font-size: 1rem;
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+        .details-btn:hover {
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+</style>
+
+<div class="container">
+    <div class="confirmation-container shadow-lg">
+        <!-- Animated Checkmark Icon -->
+        <div class="confirmation-icon">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                <path class="checkmark-check" fill="none" stroke="#fff" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+            </svg>
+        </div>
+
+        <h1 class="confirmation-title">Payment Successful!</h1>
+        <p class="confirmation-subtitle">
+            Your payment has been successfully applied. The order details have been updated accordingly.
+        </p>
+
+        <!-- Order Number Display -->
+        <div class="order-number-box">
+            <p class="order-number-label mb-1">For Order Number</p>
+            <p class="order-number mb-0">#@Model</p>
+        </div>
+
+        <!-- Back to Details Button -->
+        <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-orderId="@Model" class="btn details-btn">
+            View Order Details
+        </a>
+    </div>
+</div>

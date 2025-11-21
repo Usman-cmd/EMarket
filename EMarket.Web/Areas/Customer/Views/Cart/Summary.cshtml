@@ -1,0 +1,213 @@
+﻿@model ShoppingCartVM
+
+<style>
+    .summary-container {
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 2.5rem;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .summary-header {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        color: #ffffff;
+    }
+
+    .back-to-cart-link {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .back-to-cart-link:hover {
+            color: #ffffff;
+        }
+
+    .section-title {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        color: #f8f9fa;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #343a40;
+    }
+
+    .form-label {
+        color: #adb5bd;
+    }
+
+    .form-input {
+        background-color: #1c1c1c;
+        border: 1px solid #343a40;
+        color: #ffffff;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+    }
+
+        .form-input:focus {
+            background-color: #1c1c1c;
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+    .summary-list {
+        background-color: #1c1c1c;
+        border-radius: 10px;
+        padding: 1.5rem;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #2a2a2a;
+    }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+    .summary-item-title {
+        font-weight: 500;
+        color: #f8f9fa;
+    }
+
+    .summary-item-quantity {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .summary-total {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #343a40;
+    }
+
+    .summary-total-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary-accent);
+    }
+
+    .footer-section {
+        border-top: 1px solid #343a40;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .arrival-text {
+        color: #adb5bd;
+        font-style: italic;
+    }
+
+    .place-order-btn {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding: 0.8rem;
+        text-transform: uppercase;
+        font-size: 1.1rem;
+    }
+
+        .place-order-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+</style>
+
+<form method="post">
+    <div class="summary-container shadow-lg my-5">
+        <!-- Header -->
+        <div class="row pb-4 align-items-center">
+            <div class="col-md-6">
+                <h2 class="summary-header">Checkout</h2>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a asp-controller="Cart" asp-action="Index" class="back-to-cart-link">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Cart
+                </a>
+            </div>
+        </div>
+
+        <div class="row gx-5">
+            <!-- Left Column: Shipping Details -->
+            <div class="col-lg-7">
+                <h4 class="section-title">Shipping Details</h4>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label asp-for="OrderHeader.Name" class="form-label">Full Name</label>
+                        <input asp-for="OrderHeader.Name" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="OrderHeader.PhoneNumber" class="form-label">Phone Number</label>
+                        <input asp-for="OrderHeader.PhoneNumber" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="OrderHeader.PostalCode" class="form-label">Postal Code</label>
+                        <input asp-for="OrderHeader.PostalCode" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="OrderHeader.StreetAddress" class="form-label">Street Address</label>
+                        <input asp-for="OrderHeader.StreetAddress" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="OrderHeader.City" class="form-label">City</label>
+                        <input asp-for="OrderHeader.City" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="OrderHeader.State" class="form-label">State</label>
+                        <input asp-for="OrderHeader.State" class="form-control form-input" />
+                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Order Summary -->
+            <div class="col-lg-5 mt-5 mt-lg-0">
+                <h4 class="section-title">In Your Order</h4>
+                <div class="summary-list">
+                    @foreach (var details in Model.ShoppingCartList)
+                    {
+                        <div class="summary-item">
+                            <div>
+                                <h6 class="summary-item-title mb-0">@details.Product.Title</h6>
+                                <small class="summary-item-quantity">Quantity: @details.Count</small>
+                            </div>
+                            <span class="text-white-50">@((details.Price * details.Count).ToString("c"))</span>
+                        </div>
+                    }
+                    <div class="summary-item summary-total">
+                        <h5 class="text-white text-uppercase">Total</h5>
+                        <strong class="summary-total-amount">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer & Place Order Button -->
+        <div class="row footer-section align-items-center">
+            <div class="col-md-7">
+                <p class="arrival-text mb-0">
+                    Estimated Arrival: @DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString()
+                </p>
+            </div>
+            <div class="col-md-5 mt-3 mt-md-0">
+                <div class="d-grid">
+                    <button type="submit" value="Place Order" class="btn btn-primary place-order-btn">
+                        <i class="bi bi-shield-check-fill me-2"></i>Place Your Order
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

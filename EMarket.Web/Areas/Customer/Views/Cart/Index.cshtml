@@ -1,0 +1,196 @@
+﻿@model ShoppingCartVM
+
+<style>
+    .cart-container {
+        background-color: #2a2a2a;
+        border-radius: 15px;
+        padding: 2rem 2.5rem;
+        border: 1px solid rgba(138, 43, 226, 0.1);
+    }
+
+    .cart-header {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2.5rem;
+        color: #ffffff;
+    }
+
+    .continue-shopping-link {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .continue-shopping-link:hover {
+            color: #ffffff;
+        }
+
+    .cart-item {
+        border-bottom: 1px solid #343a40;
+        padding: 1.5rem 0;
+    }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+    .cart-item-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .cart-item-title {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #f8f9fa;
+    }
+
+    .cart-item-description {
+        font-size: 0.9rem;
+        color: #adb5bd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limit description to 2 lines */
+        -webkit-box-orient: vertical;
+    }
+
+    .quantity-controls .btn {
+        background-color: #1c1c1c;
+        border: 1px solid #495057;
+        color: #ffffff;
+        border-radius: 8px;
+    }
+
+        .quantity-controls .btn:hover {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+    .item-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .remove-btn {
+        background: none;
+        border: none;
+        color: #6c757d;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+    }
+
+        .remove-btn:hover {
+            color: #dc3545; /* Red on hover */
+        }
+
+    .summary-section {
+        background-color: #1c1c1c;
+        border-radius: 10px;
+        padding: 2rem;
+    }
+
+    .summary-total {
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 700;
+        font-size: 2rem;
+        color: var(--primary-accent);
+    }
+
+    .summary-btn {
+        background: linear-gradient(90deg, #8A2BE2, #6A5ACD);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        padding: 0.75rem;
+        text-transform: uppercase;
+    }
+
+        .summary-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+        }
+</style>
+
+<form method="post">
+    <div class="cart-container shadow-lg my-5">
+        <div class="row pb-4 border-bottom border-secondary">
+            <div class="col-md-6">
+                <h2 class="cart-header">Your Cart</h2>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="continue-shopping-link align-middle">
+                    <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+                </a>
+            </div>
+        </div>
+
+        @if (Model.ShoppingCartList.Any())
+        {
+            <!-- Cart Items List -->
+            <div class="py-3">
+                @foreach (var item in Model.ShoppingCartList)
+                {
+                    <div class="row cart-item align-items-center">
+                        <div class="col-2 col-md-1">
+                            <img src="@item.Product.ImageUrl" class="cart-item-img" alt="@item.Product.Title" />
+                        </div>
+                        <div class="col-10 col-md-5">
+                            <h5 class="cart-item-title">@item.Product.Title</h5>
+                            <div class="cart-item-description d-none d-md-block">@Html.Raw(item.Product.Description)</div>
+                        </div>
+                        <div class="col-6 col-md-3 mt-3 mt-md-0">
+                            <div class="d-flex justify-content-center quantity-controls">
+                                <a asp-action="minus" asp-route-cartId="@item.Id" class="btn btn-sm">
+                                    <i class="bi bi-dash"></i>
+                                </a>
+                                <span class="px-3 py-1 item-price">@item.Count</span>
+                                <a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-sm">
+                                    <i class="bi bi-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-4 col-md-2 text-md-end">
+                            <span class="item-price">@((item.Price * item.Count).ToString("c"))</span>
+                        </div>
+                        <div class="col-2 col-md-1 text-end">
+                            <a asp-action="remove" asp-route-cartId="@item.Id" class="remove-btn">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Summary Section -->
+            <div class="summary-section mt-4">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <p class="text-white-50 mb-0">Proceed to checkout to view shipping and tax calculations.</p>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-uppercase text-white h5 mb-0">Total:</span>
+                            <span class="summary-total">@Model.OrderHeader.OrderTotal.ToString("c")</span>
+                        </div>
+                        <div class="d-grid gap-2 mt-3">
+                            <a asp-action="Summary" class="btn btn-primary summary-btn py-2">Proceed to Summary</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <h4 class="text-white-50">Your shopping cart is empty.</h4>
+                <p class="text-muted">Looks like you haven't added anything to your cart yet.</p>
+            </div>
+        }
+    </div>
+</form>
