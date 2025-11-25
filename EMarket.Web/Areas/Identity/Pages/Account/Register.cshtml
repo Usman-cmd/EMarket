@@ -161,13 +161,11 @@
             <hr class="my-4" style="color: #343a40;" />
             <h4 class="text-white-50">Admin Settings</h4>
             <div class="col-md-6">
-                <label asp-for="Input.Role" class="form-label"></label>
                 <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
                     <option disabled selected>- Select Role -</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <label asp-for="Input.CompanyId" class="form-label"></label>
                 <select asp-for="Input.CompanyId" style="display:none;" asp-items="@Model.Input.CompanyList" class="form-select">
                     <option disabled selected>- Select Company -</option>
                 </select>
@@ -208,16 +206,14 @@
     <script>
         $(document).ready(function () {
             $('#Input_Role').change(function(){
-                var selection = $('#Input_Role option:selected').text();
-                if(selection === 'Company'){
-                    $('#Input_CompanyId').parent().show();
+                var selection = $('#Input_Role Option:Selected').text();
+                if(selection=='Company'){
+                    $('#Input_CompanyId').show();
                 }
                 else{
-                    $('#Input_CompanyId').parent().hide();
+                    $('#Input_CompanyId').hide();
                 }
-            });
-            // Trigger change on page load to set initial state
-            $('#Input_Role').trigger('change');
+            })
         })
     </script>
 }
